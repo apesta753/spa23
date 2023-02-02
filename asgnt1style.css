@@ -8,6 +8,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: Futura, sans-serif;
+	padding-top: 1%;
 }
 
 a:link, a:visited, a:active {
@@ -21,7 +22,7 @@ a:hover {
     color: #ffffff;
 }
 
-h3{
+li{
 	padding-top: 1%;
 }
 
