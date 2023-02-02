@@ -20,12 +20,15 @@ a:hover {
 }
 
 img {
-	height: 75%;
-	width: 75%;
+	height: 50%;
 }
 
 form{
 	padding: 3%;
+}
+
+li{
+	padding-top: 2%;
 }
 
 footer{
