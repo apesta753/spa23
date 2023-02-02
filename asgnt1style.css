@@ -21,6 +21,10 @@ a:hover {
     color: #ffffff;
 }
 
+h3{
+	padding-top: 1%;
+}
+
 img {
 	height: 50%;
 	padding: 2%;
@@ -30,14 +34,15 @@ form {
 	padding-bottom: 3%;
 }
 
+label{
+	padding: 2%;
+}
+
 #submit{
 	padding: 2%;
-	padding-bottom: 5%;
 }
 
 footer {
 	background-color: #FEAF4B;
 	padding: 3%;
-	padding-left: 0;
-    padding-right: 0;
 }
