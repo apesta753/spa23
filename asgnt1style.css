@@ -4,18 +4,18 @@ body {
     padding-left: 5%;
     padding-right: 5%;
     padding-top: 1em;
-    background-color: #ffffff;
+    background-color: #F9CF94;
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: Futura, sans-serif;
 }
 a:link, a:visited, a:active {
     text-decoration: none;
-    color: #0000ee;
+    color: #2D337B;
 }
 a:hover {
     text-decoration: underline;
-    background-color: #0000ee;
+    background-color: #2D337B;
     color: #ffffff;
 }
 
@@ -24,7 +24,11 @@ img {
 	width: 75%;
 }
 
+form{
+	padding: 3%;
+}
+
 footer{
-	background-color: #c2c2c2;
+	background-color: #FEAF4B;
 	padding: 3%;
 }
