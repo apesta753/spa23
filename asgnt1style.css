@@ -1,9 +1,12 @@
 body {
     font-family: futura, sans-serif;
     color: #333333;
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 3em;
+    padding-top: 2em;
+}
+
+.contain{
+	padding-left:5%;
+	padding-right: 5%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -36,11 +39,15 @@ form {
 }
 
 #fstname{
-	padding:1%:
+	padding:2%:
+}
+
+#lstname{
+	padding:2%:
 }
 
 #submit{
-	padding: 1%;
+	padding: 2%;
 }
 
 footer {
