@@ -1,18 +1,20 @@
 body {
     font-family: futura, sans-serif;
-    color: #333333;
     padding-left: 5%;
     padding-right: 5%;
-    padding-top: 1em;
+    padding-top: 3em;
     background-color: #F9CF94;
 }
+
 h1, h2, h3, h4, h5, h6 {
     font-family: Futura, sans-serif;
 }
+
 a:link, a:visited, a:active {
     text-decoration: none;
     color: #2D337B;
 }
+
 a:hover {
     text-decoration: underline;
     background-color: #2D337B;
@@ -23,15 +25,15 @@ img {
 	height: 50%;
 }
 
-form{
+form {
 	padding: 3%;
 }
 
-li{
+li {
 	padding-top: 2%;
 }
 
-footer{
+footer {
 	background-color: #FEAF4B;
 	padding: 3%;
 }
