@@ -30,11 +30,14 @@ form {
 	padding-bottom: 3%;
 }
 
-li {
-	padding-top: 2%;
+#submit{
+	padding: 2%;
+	padding-bottom: 5%;
 }
 
 footer {
 	background-color: #FEAF4B;
 	padding: 3%;
+	padding-left: 0;
+    padding-right: 0;
 }
