@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tic Tac Toe Board</title>
+<style type="text/css">
+.container{
+		width: 400px;
+	}
+	.grid{
+		width: 100px; height: 100px; border: 2px solid #333; margin: 5px; padding: 5px; display: inline-block; vertical-align: top;}
+body {
+    margin: 2%; font-family: sans-serif;
+}
+</style>
+</head>
+
+<body>
+<h1>Play Tic Tac Toe:</h1>
+<div class = "container"> 
+	<div id="prompt"></div>
+
+<script>
+
+for (i=0; i<9; i++)
+	{
+		document.write("<div class = 'grid' id = 'box" + i + "'>" + "</div>");	
+	} // end loop that creates grid
+
+
+	for (i=0; i<9; i++)
+	{
+		document.getElementById("box" + i).addEventListener("click", showXO);
+	} //create click event in boxes & call function
+	  
+document.getElementById("prompt").innerHTML="<h3>X goes first...</h3>"; //set line for who's turn
+	  
+var boardTurns = []; //board array
+	  	  
+let whosTurn = "x"; //start X & O variable to have control over change
+	
+
+	  
+function showXO(){
+	
+	boxName = (this.id); //get box id with #
+	
+	if(document.getElementById(boxName).innerHTML != ""){
+		alert("No Cheating!");
+		return;
+	} //solve for clicking same box multiple times
+	
+	index = this.id.charAt(3); //get box # from id name
+	index = parseInt(index); //using box # for array index & make sure #
+	boardTurns[index] = whosTurn; //array index to XOs
+
+	document.getElementById(boxName).innerHTML = whosTurn.toUpperCase();
+	
+	if(whosTurn == "x"){
+		whosTurn = "o";
+	}
+	else{
+		whosTurn = "x";
+	}//changing innerHTML from x to o & back
+	
+	document.getElementById("prompt").innerHTML=
+		"<h3>It's " + whosTurn.toUpperCase() + "'s Turn</h3>"; //changing prompt to value of x or o to see who's turn
+
+	return winConditions(); //calling function to check win conditions	
+}	
+
+	function winX(){
+		 alert("X Won!");
+		 return emptyGrid();
+	};
+	
+	function winO(){
+		 alert("O Won!");
+		 return emptyGrid();
+	};
+	
+function winConditions(){
+		  //1 win condition
+	let winOne = [0, 1, 2]; //array for boxes to check
+	let winOneResult = []; //empty array to fill
+		winOne.forEach(i => winOneResult.push(boardTurns[i]));//results from boxes
+	 if(winOneResult.toString() == "x,x,x"){
+		 return winX();
+	 }//make string, check condition, announce winner
+	else if (winOneResult.toString() == "o,o,o"){
+		 return winO();
+	 };
+	
+	//2 win condition
+	let winTwo = [3, 4, 5];
+	let winTwoResult = [];
+		winTwo.forEach(i => winTwoResult.push(boardTurns[i]));
+	 if(winTwoResult.toString() == "x,x,x"){
+		 return winX();
+	 }
+	else if (winTwoResult.toString() == "o,o,o"){
+		 return winO();
+	 };
+	
+	//3 win condition
+	let winThree = [6, 7, 8];
+	let winThreeResult = [];
+		winThree.forEach(i => winThreeResult.push(boardTurns[i]));
+	 if(winThreeResult.toString() == "x,x,x"){
+		 return winX();
+	 }
+	else if (winThreeResult.toString() == "o,o,o"){
+		 return winO();
+	 };
+	
+	//4 win condition
+	let winFour = [0, 3, 6];
+	let winFourResult = [];
+		winFour.forEach(i => winFourResult.push(boardTurns[i]));
+	 if(winFourResult.toString() == "x,x,x"){
+		 return winX();
+	 }
+	else if (winFourResult.toString() == "o,o,o"){
+		 return winO();
+	 };
+	
+	//5 win condition
+	let winFive = [1, 4, 7];
+	let winFiveResult = [];
+		winFive.forEach(i => winFiveResult.push(boardTurns[i]));
+	 if(winFiveResult.toString() == "x,x,x"){
+		 return winX();
+	 }
+	else if (winFiveResult.toString() == "o,o,o"){
+		 return winO();
+	 };
+	
+	//6 win condition
+	let winSix = [2, 5, 8];
+	let winSixResult = [];
+		winSix.forEach(i => winSixResult.push(boardTurns[i]));
+	 if(winSixResult.toString() == "x,x,x"){
+		 return winX();
+	 }
+	else if (winSixResult.toString() == "o,o,o"){
+		 return winO();
+	 };
+	
+	//7 win condition
+	let winSeven = [0, 4, 8];
+	let winSevenResult = [];
+		winSeven.forEach(i => winSevenResult.push(boardTurns[i]));
+	 if(winSevenResult.toString() == "x,x,x"){
+		 return winX();
+	 }
+	else if (winSevenResult.toString() == "o,o,o"){
+		 return winO();
+	 };
+	
+	//8 win condition
+	let winEight = [2, 4, 6];
+	let winEightResult = [];
+		winEight.forEach(i => winEightResult.push(boardTurns[i]));
+	 if(winEightResult.toString() == "x,x,x"){
+		 return winX();
+	 }
+	else if (winEightResult.toString() == "o,o,o"){
+		 return winO();
+	 };
+
+		  }
+
+
+	</script> 
+	
+	<button type="button" id="resetBtn">Reset</button>
+	<script>
+		
+	document.getElementById("resetBtn").addEventListener("click", emptyGrid); //add click function to button
+		
+	function emptyGrid(){
+		location.reload(); //reload page
+	};
+	</script> 
+</div>
+</body>
+</html>
