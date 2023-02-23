@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Joe's Hot Dogs</title>
+<style type="text/css">
+body {
+    font-family: futura, sans-serif;
+    color: #333333;
+    padding-left: 7%;
+    padding-right: 7%;
+    padding-top: 1em;
+	padding-bottom: 1em;
+    background-color: #F6F7D3;
+	line-height: 1.7em;
+}
+	#cartInfo{display:none};
+
+</style>
+</head>
+
+<body>
+<h1>Joe's Hot Dogs</h1>
+	<h3>Place your order:</h3>
+	<input size="2" id="val1"><label for="val1"> Hot Dog $4.00</label><br>
+              <input size="2" id="val2"><label for="val2"> Fries $3.50</label><br>
+              <input size="2" id="val3"><label for="val3"> Soda $1.50</label><br>
+	<input size="2" id="val4"><label for="val4"> Sauerkraut $1.00</label><br>
+	
+              <button type="button" id="cost">Cart</button>
+    <div id="cartInfo"> 
+	<h3>Quantaties:</h3>
+	Hot Dog: <span id="hotDog"></span><br>
+	Fries: <span id="fries"></span><br>
+	Soda: <span id="soda"></span><br>
+	Sauerkraut: <span id="sakrt"></span><br>
+		<h3>Bill:</h3>
+	Subtotal: <span id="subtotal"></span><br>
+	Discount (spend $20 or more): <span id="dist"></span><br>
+	Tax: <span id="tax"></span><br>
+	Total: <span id="total"></span><br>
+
+		<button type="button" id="checkout">Checkout</button>
+	</div>
+<script>
+
+var calcButton = document.getElementById("cost");
+	var cart = document.getElementById("cartInfo");
+var ckoButton = document.getElementById("checkout");
+	
+	var val1 = document.getElementById("val1");
+   var val2 = document.getElementById("val2");
+   var val3 = document.getElementById("val3");
+   var val4 = document.getElementById("val4");
+	
+
+	 
+ calcButton.onclick = function () { 
+cart.style.display="block";
+	 
+	  document.getElementById("hotDog").innerHTML = val1.value;
+	 document.getElementById("fries").innerHTML = val2.value;
+	 document.getElementById("soda").innerHTML = val3.value;
+	 document.getElementById("sakrt").innerHTML = val4.value;
+	 
+	var costArray = [4, 3.5, 1.5, 1];
+	 
+	 var subtotal = (((parseFloat(val1.value*costArray[0])) + (parseFloat(val2.value*costArray[1])) + (parseFloat(val3.value*costArray[2])) + (parseFloat(val4.value*costArray[3])))).toFixed(2);
+	 
+	 var discount = .1;
+	 var spend = 20;
+	 
+	 if (subtotal >= spend){
+		 var disSub = (parseFloat(subtotal) * discount).toFixed(2);
+		 console.log(disSub);
+		 var preTaxTotal = (parseFloat(subtotal) - parseFloat(disSub)).toFixed(2);
+		 tax = ((parseFloat(preTaxTotal)) *.0625).toFixed(2);
+		 var total = (parseFloat(preTaxTotal) + parseFloat(tax)).toFixed(2);
+		 document.getElementById("dist").innerHTML = "$" + disSub;
+	 }else{
+		 var tax = (parseFloat(subtotal)*.0625).toFixed(2) ;
+		 total = (parseFloat(subtotal) + parseFloat(tax)).toFixed(2);
+	 }
+	
+	 
+   //if something entered is NaN the result will be NaN and give an error message
+   if (isNaN(subtotal) == true) {
+     subtotal = "error, value entered is not a number";
+	   tax = "error, value entered is not a number";
+   };
+	 
+	
+   document.getElementById("subtotal").innerHTML = "$" + subtotal;
+	 document.getElementById("tax").innerHTML = "$" + tax;
+	 document.getElementById("total").innerHTML = "$" + total;
+	 
+	 
+	 ckoButton.onclick = function checkout() { 
+		cart.innerHTML = "<h3>Thank you for your order!</h3>";
+		 //clearTimeout(myTimeout);
+		 const myTimeout = setTimeout(reset, 3000);
+	function reset(){
+	location.reload();
+};
+			//document.getElementById('val1').innerHTML = "type = 'reset'"; 
+ };
+
+	};
+
+	
+	</script> 
+	
+	
+</body>
+</html>
