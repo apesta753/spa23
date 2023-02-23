@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Joe's Hot Dogs</title>
+<style type="text/css">
+body {
+    font-family: futura, sans-serif;
+    color: #333333;
+    padding-left: 7%;
+    padding-right: 7%;
+    padding-top: 1em;
+	padding-bottom: 1em;
+    background-color: #F6F7D3;
+	line-height: 1.7em;
+}
+	#cart{display: none;}
+</style>
+</head>
+
+<body>
+<h1>Joe's Hot Dogs</h1>
+	
+	<button type="button" id="orderBtn">Add Item</button>
+	<button type="button" id="cartBtn">Cart</button>
+	<button type="button" id="costBtn">Checkout</button><br>
+	<div id="menu">
+
+		</div>
+	
+<div id="cart">
+    Subtotal: <span id="subtotal"></span><br>
+	Discount (spend $20 or more): <span id="dist"></span><br>
+	Tax: <span id="tax"></span><br>
+	Total: <span id="total"></span><br>
+</div>
+	
+<div id="message">
+</div>
+	
+<script>
+	
+window.onload = function (){
+
+//menu objects
+	const hotDog = {
+		name:"Hot Dog",
+		price:4,
+		quantity: 0,
+	};
+	const fries = {
+		name:"Fries",
+		price:3.5,
+		quantity: 0,
+	};
+	const soda = {
+		name:"Soda",
+		price:1.5,
+		quantity: 0,
+	};
+	const sakrt = {
+		name:"Sauerkraut",
+		price:1,
+		quantity: 0,
+	};
+	
+	const menuArray = [hotDog, fries, soda, sakrt];
+	
+	//create menu
+	var menu = document.getElementById("menu");
+	menu.innerHTML = "<h3>Menu:</h3>" + "<ol>" + "<li>" + hotDog.name + " $" + hotDog.price + ".00" + "</li>" + "<li>" + fries.name + " $" + fries.price + "0" + "</li>" + "<li>" + soda.name + " $" + soda.price + "0" + "</li>" + "<li>" + sakrt.name + " $" + sakrt.price + ".00" + "</li>" + "</ol>";
+
+	
+var orderBtn = document.getElementById("orderBtn");
+ orderBtn.onclick = function () { 
+	 
+	 let itemPmpt = prompt("Enter the number of the item you'd like to order:", "Select 1-4");
+	 
+	 if (itemPmpt == 1){
+		 hotDog.quantity = prompt("How many " + hotDog.name + " would you like?");
+		 alert("Adding " + hotDog.quantity + " " + hotDog.name);
+	 } else if (itemPmpt == 2){
+		 fries.quantity = prompt("How many " + fries.name + " would you like?");
+		 alert("Adding " + fries.quantity + " " + fries.name);
+	 } else if (itemPmpt == 3){
+		 soda.quantity = prompt("How many " + soda.name + " would you like?");
+		 alert("Adding " + soda.quantity + " " + soda.name);
+	 } else if (itemPmpt == 4){
+		 sakrt.quantity = prompt("How many " + sakrt.name + " would you like?");
+		 alert("Adding " + sakrt.quantity + " " + sakrt.name);
+	 };
+	 console.log(hotDog.quantity, sakrt.quantity);
+
+	 if (itemPmpt >= 5 || itemPmpt <= 0){
+		 alert("Please select from our 4 menu items!");
+	 } 
+	 else if (isNaN(itemPmpt) == true){
+		 alert("Please select a number from 1-4!");
+	 };
+
+	
+	var cartBtn = document.getElementById("cartBtn");
+	var cart = document.getElementById("cart");
+	cartBtn.onclick = function(){
+		cart.style.display="block";
+		
+		//cart.innerHTML = "<li>(" + hotDog.quantity + ")" + " " + hotDog.name + "</li>";
+		
+		var subtotal = document.getElementById("subtotal");
+		var tax = document.getElementById("tax");
+		var discount = document.getElementById("dist");
+		var total = document.getElementById("total");
+	
+		var subCalc = ((parseFloat(hotDog.quantity * hotDog.price)) + (parseFloat(fries.quantity * fries.price)) + (parseFloat(soda.quantity * soda.price)) + (parseFloat(sakrt.quantity * sakrt.price))).toFixed(2);
+		subtotal.innerHTML = "$" + subCalc;
+		//tax calc
+		var taxCalc = (((parseFloat(hotDog.quantity * hotDog.price)) + (parseFloat(fries.quantity * fries.price)) + (parseFloat(soda.quantity * soda.price)) + (parseFloat(sakrt.quantity * sakrt.price)))*.0625).toFixed(2);
+		tax.innerHTML = "$" + taxCalc;
+		
+		//discount calc
+		var discount = .1;
+	 	var spend = 20;
+		if (subCalc >= spend){
+		 var disCalc = (parseFloat(subCalc) * discount).toFixed(2);
+		dist.innerHTML = "$" + disCalc;
+			var totalCalc = (parseFloat(subCalc) + parseFloat(taxCalc) - parseFloat(disCalc)).toFixed(2);
+			total.innerHTML = "$" + totalCalc;
+	 }else{
+		totalCalc = (parseFloat(subCalc) + parseFloat(taxCalc)).toFixed(2);
+		total.innerHTML = "$" + totalCalc;
+	 }
+	
+	};
+	 
+	 		var costBtn = document.getElementById("costBtn");
+	costBtn.onclick = function(){
+		//document.getElementById("cart").style.display="none";
+		document.getElementById("message").innerHTML = "<h3>Thank you for your order!</h3>";
+		const myTimeout = setTimeout(reset, 3000);
+	function reset(){
+	location.reload();
+	};
+	};
+	
+
+};
+
+};
+	</script> 
+	
+	
+</body>
+</html>
