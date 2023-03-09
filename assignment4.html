@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Battleship</title>
+<style type="text/css">
+#container{
+		width: 500px;
+	}
+.grid{
+		width: 50px; height: 50px; border: 2px solid #333; margin: 5px; padding: 5px; display: inline-block; vertical-align: top;
+	}
+body {
+    margin: 2%; font-family: sans-serif;
+}
+</style>
+</head>
+
+<body>
+	<div class = "header"><h1>Battleship</h1></div>
+	<div id="prompt"><h3>Click a square to begin:</h3></div>
+	<div id = "container"> 
+
+	<script>
+
+		//global variables
+		let getCoords="";
+		let clickArray = [];
+		let getSq = "";
+		let hasShipArray = [];
+		let prompt = document.getElementById("prompt");
+		const myTimeout = "";
+		
+		//square object
+		function Square(sqId, sqCoords){
+			this.id = sqId;
+			this.sqCoords = sqCoords;
+			this.clicked = false;
+			this.hasShip = false;
+			this.result = "";
+		};//end square object
+		
+		
+		//6x6 board elements
+		let container = document.getElementById("container");
+		let grid = {rows: 6, cols: 6};
+		let gridSize = grid.rows * grid.cols;
+		
+		//pass size to function to create grid
+		createGrid(gridSize);
+ 
+	//6x6 board
+	function createGrid(){
+			let fullGrid = "";
+			let squares = [];
+		//create square objects
+			for(let sqId=0; sqId < gridSize; sqId++){
+				let square = new Square (sqId, [sqId, sqId]);
+					sqArray = squares.push(square);
+			};
+		//add square objects to DOM
+		squares.forEach((item) => {
+				sqString = "<div class = 'grid' id = 'sq " + item.id + "' data-clicked = '" + item.clicked + "' data-sqCoords = '" + item.sqCoords + "' data-hasShip = '" + item.hasShip + "'>&nbsp</div>";
+				container.innerHTML += sqString;
+			});
+		};//end create grid function
+		
+
+//ship objects
+	const myShips = 
+	{
+	ships: 
+	[
+		{
+		'name': 'ship1',
+		'orientation': 'vertical',
+		'size': 4,
+		'coords':[3,3]
+		},	
+		{
+		'name':'ship2',
+		'orientation': 'horizontal',
+		'size': 3,
+		'coords':[31,31]
+		},
+		{
+		'name':'ship3',
+		'orientation': 'vertical',
+		'size': 2,
+		'coords':[6,6]
+		},
+		{
+		'name':'ship4',
+		'orientation': 'horizontal',
+		'size': 3,
+		'coords':[22,22]
+		}
+	]
+	};//ship objects
+	
+		//make squares clickable
+		for(let i=0; i < gridSize; i++){
+				document.getElementById("sq " + i).addEventListener("click", selectSquare);
+			};//end squares clickable
+
+	//adding functionality to squares
+	function selectSquare(Square){
+		let sqName = (this.id);
+		getSq = document.getElementById(sqName);
+		//array of clicked squares
+		clickArray.push(sqName); 
+		//add clicked state to Square object
+		let trueClick = Square.clicked = true;
+		getSq.setAttribute("data-clicked", trueClick);
+		//get square coordinates
+		getCoords = getSq.getAttribute("data-sqCoords");
+
+			
+	//solve for double clicks
+	if(getSq.style.backgroundColor != ""){
+		alert("No Cheating!");
+		return;
+	}
+	   
+//iterate through myShips object to get ships		
+for(let s = 0, l = myShips.ships.length; s < l; s++) {
+    allShips = myShips.ships[s];
+	let stringCoords = allShips.coords;
+	
+//get ships coordinates	& add hasShip to Square object
+if ([stringCoords["0"], stringCoords["1"]] == getCoords){
+let trueShip = Square.hasShip = true;
+	getSq.setAttribute("data-hasShip", trueShip);
+};
+};//end iterate to get ships	
+			
+//hit or miss ship & change square color
+	if(Square.hasShip == true){
+		getSq.style.backgroundColor = "red";
+		prompt.innerHTML=
+		"<h3>Hit...</h3>";
+		 hasShipArray.push(Square.sqId);
+		
+	}else{
+		getSq.style.backgroundColor = "grey";
+		prompt.innerHTML=
+		"<h3>Miss...</h3>";
+	};//end hit/miss
+		
+//20 guesses OR all ships found - game over
+if (clickArray.length >= 20){
+		alert("Game Over!");
+		getSq.style.backgroundColor = "white";
+	prompt.innerHTML= "<h3>Game Over: You're out of guesses!</h3>";
+	setTimeout(reset, 1500); //reload page
+	}//end 20 guesses
+	else if (hasShipArray.length >= myShips.ships.length){
+		alert("Congrats, you hit all the ships! Game over.");
+		prompt.innerHTML= "<h3>Game Over: You hit all the ships!</h3>";
+		setTimeout(reset, 1500); //reload page
+		};//end hit all ships
+	//function for page reload
+	function reset(){
+	location.reload();
+	};//end page reload
+};//end events happen on square click
+	</script>
+	</div>
+</body>
+</html>
