@@ -1,1 +1,212 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Wordle</title>
+<style type="text/css">
+body {margin: 3%; font-family: sans-serif;}
+	
+#container{width: 450px; align-content: center;}
 
+.square{height: 60px; width: 60px; text-align:center;
+line-height: 60px; font-size:30px; border:1px solid #000; display: inline-block; margin: 1%; padding: 2%;}
+.square.correct {background-color: #48D775}
+.square.inWord {background-color: #E1E81B}
+.square.incorrect {background-color: #999}
+.square.none {background-color: #FFFFFF}
+
+.keys{width: 45px; height: 20px; margin: 1%; padding: 1%; margin-top: 1%; display: inline-block; background-color:#BFBFBF; text-align:center; line-height: 20px;}
+	
+@media screen and (max-width: 600px) {
+  #container {width: 70%;}
+  .square{height: 40px; width: 40px; line-height: 40px; font-size:15px;}
+  .keys{width: 30px; height: 20px; line-height: 20px; font-size:10px;}
+</style>
+</head>
+
+<body>
+<script>
+/**********  Square Class **********/
+function Square(location){
+this.location = location;
+this.letter = "";
+this.state = "none";  // "correct", "incorrect", "inWord"
+this.setLetter = function(letter) {this.letter = letter;}
+this.setState = function(state) {this.state = state;}
+this.getLetter = function() {return this.letter;}
+this.updateLetter = function(location, letter) {
+document.getElementById(this.location).innerText = this.letter
+}
+this.updateState= function() {
+document.getElementById(this.location).classList.add(this.state)
+}
+};  // end class Square
+	
+/**********  Keyboard Class **********/
+function Keyboard(keyInput, keyId){
+this.keyInput = keyInput;
+this.keyId = keyId;
+this.enter = "enter";
+this.delete = "delete";
+this.state = "none";  // "correct", "incorrect", "inWord"
+this.setState = function(state) {this.state = state;}
+this.updateState= function() {
+document.getElementById(this.keyId).classList.add(this.state)
+}
+}; // end class Keyboard
+	
+/**********  Guess Class **********/
+function Guess(){
+this.makeWord = [];
+this.winningWord = "";
+
+}; // end class Guess
+
+	
+	
+/********** Random Word API **********/
+
+let guess = new Guess();
+
+const data = null;
+const xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", getWord);
+	
+function getWord() {
+	if (this.readyState === this.DONE) {
+		guess.winningWord = this.responseText;
+		console.log(guess.winningWord);
+	}
+}
+
+xhr.open("GET", "https://random-words5.p.rapidapi.com/getRandom?wordLength=5");
+xhr.setRequestHeader("X-RapidAPI-Key", "e0adf98328msh129416da2581babp18c4afjsnc7f4df8262f6");
+xhr.setRequestHeader("X-RapidAPI-Host", "random-words5.p.rapidapi.com");
+xhr.send(data); 
+//end Random Word API
+
+/********** Dictionary API **********/
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': 'e0adf98328msh129416da2581babp18c4afjsnc7f4df8262f6',
+		'X-RapidAPI-Host': 'dictionary-by-api-ninjas.p.rapidapi.com'
+	}
+};
+async function asyncCall() {
+  console.log('calling');
+  const result = await getWord();
+  console.log(result);
+};
+
+let url = "https://dictionary-by-api-ninjas.p.rapidapi.com/v1/dictionary?word=" + toString(guess.winningWord);
+fetch(url, options)
+	.then(response => response.json())
+	.then(response => console.log(response))
+	.catch(err => console.error(err));
+//end Dictionary API
+
+</script>
+	
+	
+<h1>Wordle</h1>
+<h4>You have 6 chances to guess a 5-letter word.</h4>
+<div id = "container">
+<div id = "grid"></div>
+<div id = "keyboard"></div>
+</div>
+<br>
+<button id = "debug">Debug</button>
+
+	
+<script>
+	
+/**********  new Squares **********/
+let square = "";
+let squares = [];
+for(let i = 0; i<30; i++){
+	square = new Square("sq" + i);
+	squares.push(square);
+}
+
+squares.forEach((item) => 
+				{document.getElementById("grid").innerHTML += "<div class = 'square' id = '" + item.location + "'>&nbsp</div>";}
+			 	);
+//end make Squares
+
+/**********  new Keyboard **********/
+let keys = "";
+let newKey = "";
+let keyArray = [];
+let keyInput = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
+
+for(let i=0; i < keyInput.length; i++){
+	keys += keyInput[i];
+};
+
+for(let keyId=0; keyId < keyInput.length; keyId++){
+	newKey = new Keyboard (keys[keyId], keyId);
+	keyArray.push(newKey);
+			};		
+	
+//add Keyboard objects to DOM
+keyArray.forEach((item) => {
+document.getElementById("keyboard").innerHTML += "<div class = 'keys' id = 'keys" + item.keyId + "'>" + item.keyInput + "</div>";
+});
+	
+let createDelete = document.getElementById("keyboard").innerHTML += "<div class = 'keys' id = '" + newKey.delete + "'>" + newKey.delete + "</div>";
+	
+let createEnter = document.getElementById("keyboard").innerHTML += "<div class = 'keys' id = '" + newKey.enter + "'>" + newKey.enter + "</div>";
+	
+//add click event to keys
+	for(let k=0; k<keyInput.length; k++){
+	document.getElementById("keys" + k).addEventListener("click", letterGuess);
+	};
+
+	document.getElementById(newKey.delete).addEventListener("click", deleteLetters);
+	
+	document.getElementById(newKey.enter).addEventListener("click", enterGuess);
+//end make Keyboard
+
+//add debug functionality
+document.getElementById("debug").addEventListener("click", revealWord);
+function revealWord(){
+	document.getElementById("debug").innerHTML = guess.winningWord;
+}//end debug
+	
+/**********  add letters to board **********/	
+let x = -1;
+let newWords = "";
+function letterGuess(){
+	x++;
+	square.location = "sq" + x;
+	square.letter = document.getElementById(this.id).innerHTML;
+	square.updateLetter(square.location, square.letter);
+	
+	let letters = guess.makeWord;
+	letters.push(square.letter);
+	newWords = letters.join("");
+	console.log(newWords);
+	if(newWords.length == 5){
+		window.alert("Click enter to check your guess");
+	}
+}//end add letters to board
+	
+function deleteLetters(){
+	//get location of last filled square & fill with &nbsp, everything takes a step back
+	document.getElementById(square.location).innerHTML = "&nbsp";
+}
+	
+function enterGuess(){
+	//check against word & change state
+	if(newWords.length == 5){
+	square.setState("correct");
+	square.updateState();
+	};
+}
+
+</script>
+</body>
+</html>
