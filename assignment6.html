@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://unpkg.com/react@16.7.0/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.development.js"></script>
+<title>Wordle Redux</title>
+<style type="text/css">
+
+body {margin: 3%; font-family: sans-serif;}
+
+.container{width: 450px;}
+
+.square{height: 60px; width: 60px; text-align:center;
+line-height: 60px; font-size:30px; border:1px solid #000; display: inline-block; margin: 1%; padding: 2%; vertical-align: top;}
+.square.correct {background-color: #48D775}
+.square.inWord {background-color: #E1E81B}
+.square.incorrect {background-color: #999}
+
+.keys{width: 45px; height: 20px; margin: 1%; padding: 1%; margin-top: 1%; display: inline-block; background-color:#BFBFBF; text-align:center; line-height: 20px;}
+	
+</style>
+</head>
+
+<body>
+	<h1>Wordle Redux</h1>
+	<div id="myapp"></div>
+	<div id="board"></div>
+	
+<script>
+/**********  Square Class **********/
+function Square(location){
+this.location= location;
+this.letter = "";
+this.state = "none";  // "correct", "incorrect", "inWord"
+this.setLetter = function(letter) {this.letter = letter;}
+this.setState = function(state) {this.state = state;}
+this.getLetter = function() {return this.letter;}
+this.updateLetter = function() {
+document.getElementById(this.location).innerText = this.letter
+}
+this.updateState= function() {
+document.getElementById(this.location).classList.add(this.state)
+}
+}  // end class Square
+
+//array of Square objects
+var squares = [];
+for(let i = 0; i<30; i++){
+	squares.push(new Square(i));
+}
+
+//create React grid/board
+var grid = React.createElement("div", {className: "container"},
+	squares.map((square, i) => 
+				React.createElement("div", {className:"square", id: square.location, key: i}))
+);
+
+//letter array
+var keyInput = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"];
+
+//create React keyboard component
+function keyboard(){ 
+	return React.createElement("div", {className: "container"},
+	keyInput.map((letters, i) => 
+				React.createElement("div", {className:"keys", key: i}, letters))
+);
+};
+	
+//render grid & keyboard
+ReactDOM.render(grid, myapp);
+ReactDOM.render(
+	React.createElement(keyboard, { letters: keyInput }, null), document.getElementById("board")
+	);
+
+//add words to grid & iterate
+let letters = [];
+let wordsArray = ["MIGHT", "FLOOD", "STRAY"];
+let testWords = wordsArray.toString().replace(/,/g, "");
+
+for (let w = 0; w < testWords.length; w++){
+		letters.push(testWords[w]);
+};
+
+//add letters to squares
+squares.forEach((item) => 
+{item.setLetter(letters[item.location])
+	if (testWords[item.location] == undefined){
+	item.setLetter("");
+}
+ 	item.updateLetter()
+}
+			 	);
+
+//add state to squares
+document.getElementById("0").classList.add("correct");
+document.getElementById("7").classList.add("correct");
+document.getElementById("8").classList.add("inWord");
+document.getElementById("9").classList.add("inWord");
+document.getElementById("14").classList.add("correct");
+	
+</script>	
+</body>
+</html>
+	
